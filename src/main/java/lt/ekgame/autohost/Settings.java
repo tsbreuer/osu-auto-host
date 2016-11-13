@@ -25,7 +25,7 @@ public class Settings {
 	
 	// general
 	public List<Integer> operatorIds;
-	public String infoText, helpText;
+	public String infoText, helpText, infoText2;
 	
 	// beatmap criteria
 	public double minDifficulty, maxDifficulty;
@@ -44,12 +44,14 @@ public class Settings {
 		CommentedConfigurationNode general = node.getNode("general");
 		operatorIds = general.getNode("operators").getList(TypeToken.of(Integer.class));
 		infoText =    general.getNode("info-text").getString();
+		infoText2 =    general.getNode("info-text2").getString();
 		helpText =    general.getNode("help-text").getString();
 		
 		CommentedConfigurationNode room = node.getNode("room");
 		roomName =     room.getNode("name").getString();
 		roomPassword = room.getNode("password").getString();
 		roomSlots =    room.getNode("slots").getInt();
+		freemodsEnabled =    room.getNode("freemods").getBoolean();
 		
 		CommentedConfigurationNode criteria = node.getNode("beatmap-criteria");
 		minDifficulty =  criteria.getNode("min-difficulty").getDouble();

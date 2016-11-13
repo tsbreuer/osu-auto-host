@@ -8,8 +8,8 @@ import lt.ekgame.bancho.api.units.Beatmap;
 
 public class BeatmapHandler {
 	
-	private Queue<Beatmap> beatmaps = new LinkedList<>();
-	private Queue<Beatmap> completed = new LinkedList<>();
+	public Queue<Beatmap> beatmaps = new LinkedList<>();
+	public Queue<Beatmap> completed = new LinkedList<>();
 	private Beatmap current = null;
 	
 	public BeatmapHandler(String folder) {
@@ -26,6 +26,30 @@ public class BeatmapHandler {
 				}
 			}
 		}
+	}
+	
+	public String getBeatmapsQueue()
+	{
+		String ReturnString = beatmaps.size() + " Beatmaps in Queue.";
+		int i = 0;
+			for (Beatmap beatmap : beatmaps) {
+				if (beatmap.getDT()) {
+					ReturnString = ReturnString+" || DT [http://osu.ppy.sh/b/"+beatmap.getId()+" "+ beatmap.getArtist()+" - " + beatmap.getTitle()+ "] ["+beatmap.getDiff()+"*]";
+				}
+				if (beatmap.getHT()) {
+					ReturnString = ReturnString+" || HT [http://osu.ppy.sh/b/"+beatmap.getId()+" "+ beatmap.getArtist()+" - " + beatmap.getTitle()+ "] ["+beatmap.getDiff()+"*]";
+				}
+				if (!beatmap.getDT() && !beatmap.getHT()){
+					ReturnString = ReturnString+" || [http://osu.ppy.sh/b/"+beatmap.getId()+" "+ beatmap.getArtist()+" - " + beatmap.getTitle()+ "] ["+beatmap.getDiff()+"*]";
+				}
+				
+				i++;
+		}
+			if (ReturnString.equals("")){
+				return "No beatmaps in queue";
+			} else {
+	return ReturnString;
+			}
 	}
 	
 	public boolean recentlyPlayed(Beatmap check, int recentness) {
@@ -49,6 +73,13 @@ public class BeatmapHandler {
 		return false;
 	}
 	
+	public boolean hasRequested(int userId){
+	for (Beatmap beatmap : beatmaps) {
+		if (beatmap.RequestedBy == userId)
+			return true;
+	}
+	return false;
+	}
 	public Beatmap nextBeatmap() {
 		if (current != null)
 			completed.add(current);
@@ -68,6 +99,10 @@ public class BeatmapHandler {
 
 	public void push(Beatmap beatmap) {
 		beatmaps.add(beatmap);
+	}
+
+	public int queueSize() {
+		return beatmaps.size();
 	}
 
 }
