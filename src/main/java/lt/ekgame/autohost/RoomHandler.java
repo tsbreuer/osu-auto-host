@@ -369,8 +369,6 @@ public class RoomHandler implements PacketHandler {
 		if (packet instanceof PacketRoomJoined) {
 			bot.beatmaps.reset();
 			mp.setBeatmap(bot.beatmaps.nextBeatmap());
-			timer = new TimerThread(this);
-			timer.start();
 		}
 		
 		if (packet instanceof PacketRoomScoreUpdate) {
@@ -509,12 +507,7 @@ public class RoomHandler implements PacketHandler {
 			String IDs[] = new String[4];
 			//mp.getRoom().openSlots(2);
 			byte[] status = mp.getRoom().slotStatus;
-			if (timer.stopped) {
-				timer = new TimerThread(this);
-				timer.start();				
-			} else{
-				timer.resetTimer();
-			}
+
 			SkipMe.clear();
 
 			if (scores[0][1] != 0){
@@ -628,6 +621,7 @@ public class RoomHandler implements PacketHandler {
 	}
 
 	public void onBeatmapAdded(Beatmap beatmap, int bID) {
+		
 		BeatmapHandler beatmapHandler = AutoHost.instance.beatmaps;
 		int size = beatmapHandler.queueSize();
 		long ssNOMOD = 0;
@@ -636,6 +630,7 @@ public class RoomHandler implements PacketHandler {
 		long ssHDHR = 0;
 		
 		if (bot.beatmaps.getBeatmap() == null) {
+			timer.resetTimer();
 			MultiplayerHandler mp = bot.bancho.getMultiplayerHandler();
 			mp.setBeatmap(bot.beatmaps.nextBeatmap());
 			if (beatmap.getDT()){
@@ -792,7 +787,6 @@ public class RoomHandler implements PacketHandler {
 				bot.bancho.sendMessage("#multiplayer", "Lobby is empty, skipping current beatmap.");
 				mp.setBeatmap(bot.beatmaps.nextBeatmap());
 				onBeatmapChange();
-				timer.resetTimer();
 			} else {
 			bot.bancho.sendMessage("#multiplayer", String.format("%d/%d people are ready - extending wait time. If you are ready, please use !ready or click on ready", slotsReady, slotsTaken));
 			timer.resetTimer();
@@ -876,8 +870,6 @@ public class RoomHandler implements PacketHandler {
 	}
 
 	public void waitTimer() {
-		timer = new TimerThread(this);
-		timer.start();
-
+		timer.resetTimer();
 	}
 }
