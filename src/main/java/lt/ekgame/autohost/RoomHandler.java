@@ -369,6 +369,8 @@ public class RoomHandler implements PacketHandler {
 		if (packet instanceof PacketRoomJoined) {
 			bot.beatmaps.reset();
 			mp.setBeatmap(bot.beatmaps.nextBeatmap());
+			timer = new TimerThread(this);
+			timer.start();
 		}
 		
 		if (packet instanceof PacketRoomScoreUpdate) {
