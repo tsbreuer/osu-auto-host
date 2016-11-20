@@ -43,12 +43,19 @@ public class CommandsRoom implements CommandExecutor {
 		this.bot = bot;
 		this.osuApiKey = osuApiKey;
 	}
+	
 
 	@Override
 	public boolean accept(String channel, String sender) {
 		return channel.equals("#multiplayer");
 	}
-
+	
+	@Override
+	public void Discord(String channel, String sender, String message){
+		if (channel.equals("#multiplayer"))
+		lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n"+channel+" - "+sender+": "+message+"```");
+	}
+	
 	@Override
 	public void handle(String channel, String sender, int userId, String label, List<String> args) {
 		MultiplayerHandler mp = bot.bancho.getMultiplayerHandler();
@@ -66,6 +73,7 @@ public class CommandsRoom implements CommandExecutor {
 		if (label.equals("lock") && bot.perms.isOperator(userId)) {
 			bot.roomHandler.editSlot(Integer.valueOf(args.get(0)));
 			bot.bancho.sendMessage("#multiplayer","Toggled lock on slot "+args.get(0));    
+			lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: Toggled lock on slot "+args.get(0)+"```");
 		}
 		
 		if (label.equals("kick") && bot.perms.isOperator(userId)) {
@@ -89,6 +97,7 @@ public class CommandsRoom implements CommandExecutor {
 					if (AutoHost.instance.roomHandler.getUsername(mp.getRoom().slotId[i]).toLowerCase().contains(args.get(0).toLowerCase()))
 					{
 					bot.bancho.sendMessage("#multiplayer", ""+AutoHost.instance.roomHandler.getUsername(mp.getRoom().slotId[i])+" was kicked by "+AutoHost.instance.roomHandler.getUsername(userId)+". Reason: "+reason);
+					lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: "+AutoHost.instance.roomHandler.getUsername(mp.getRoom().slotId[i])+" was kicked by "+AutoHost.instance.roomHandler.getUsername(userId)+". Reason: "+reason+"```");
 					bot.roomHandler.editSlot(i);
 					bot.roomHandler.editSlot(i);
 					found = true;
@@ -99,7 +108,7 @@ public class CommandsRoom implements CommandExecutor {
 		}
 			if (!found)
 				bot.bancho.sendMessage("#multiplayer", "Player not found!");
-				
+			lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: Player not found!"+"```");
 		}
 		
 		if (label.equals("slotinfo") && bot.perms.isOperator(userId)) {
@@ -113,16 +122,18 @@ public class CommandsRoom implements CommandExecutor {
 			}
 			System.out.println(statuses);
 			bot.bancho.sendMessage("#multiplayer", statuses);
-			
+			lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: "+statuses+"```");
 		}
 		
 		if (label.equals("addop") && bot.perms.isOperator(userId)) {
 			AutoHost.instance.settings.operatorIds.add(Integer.valueOf(args.get(0)));
 			bot.bancho.sendMessage("#multiplayer", "Added "+userId+" to operators list.");
+			lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: Added "+userId+" to operators list."+"```");
 		}
 		if (label.equals("removeop") && bot.perms.isOperator(userId)) {
 			AutoHost.instance.settings.operatorIds.remove(Integer.valueOf(args.get(0)));
 			bot.bancho.sendMessage("#multiplayer", "Removed "+userId+" from operators list.");
+			lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: removed"+userId+" from operators list."+"```");
 		}
 	
 		if (label.equals("dt") && bot.perms.isOperator(userId)) {
@@ -177,17 +188,29 @@ public class CommandsRoom implements CommandExecutor {
 			}
 		}
 		
-		if (label.equals("wait") && bot.perms.isOperator(userId)) {		
-			bot.bancho.sendMessage("#multiplayer", "Restarting wait time to 3 minutes.");
+		if (label.equals("delay") && bot.perms.isOperator(userId)) {		
+			bot.bancho.sendMessage("#multiplayer", "Restarting wait timer");
 			bot.roomHandler.waitTimer();
+			lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: Restarting wait timer"+"```");
+		}
+		
+		if (label.equals("wait")) {		
+			boolean delayed = bot.roomHandler.extendTimer();
+			if (delayed){
+				bot.bancho.sendMessage("#multiplayer", "Timer extended by 1 minute.");
+			lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: Timer extended by 1 minute."+"```");
+			}else
+				bot.bancho.sendMessage("#multiplayer", "Timer was already extended");
 		}
 		
 		if (label.equals("afk")) {
 			if (bot.roomHandler.isAFK(userId)){
 				bot.bancho.sendMessage("#multiplayer", sender+" is not AFK anymore. Welcome Back!");
+				lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: "+sender+" is not AFK anymore. Welcome Back!"+"```");
 				bot.roomHandler.removeAFK(userId);
 			}else{
 				bot.bancho.sendMessage("#multiplayer", sender+" is now marked as AFK. Please let us know when you're back ;)");
+				lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: "+sender+" is now marked as AFK. Please let us know when you're back ;)"+"```");
 				bot.roomHandler.setAFK(userId);
 			}
 		}
@@ -199,20 +222,24 @@ public class CommandsRoom implements CommandExecutor {
 			};
 			mp.setRoomName(search);
 			bot.bancho.sendMessage(channel, "Lobby name now is: "+search);
+			lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: "+ "Lobby name now is: "+search+"```");
 		}
 		
 		if (label.equals("mindiff") && bot.perms.isOperator(userId)) {
 			AutoHost.instance.settings.minDifficulty = Double.parseDouble(args.get(0));
 			bot.bancho.sendMessage(channel, "New minimum difficulty now is "+args.get(0)+"*");
+			lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: "+"New minimum difficulty now is "+args.get(0)+"*"+"```");
 		}
 		
 		if (label.equals("maxdiff") && bot.perms.isOperator(userId)) {
 			AutoHost.instance.settings.maxDifficulty = Double.parseDouble(args.get(0));
 			bot.bancho.sendMessage(channel, "New maximum difficulty now is "+args.get(0)+"*");
+			lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: "+ "New maximum difficulty now is "+args.get(0)+"*"+"```");
 		}
 		if (label.equals("graveyard") && bot.perms.isOperator(userId)) {
 			AutoHost.instance.settings.allowGraveyard = !AutoHost.instance.settings.allowGraveyard;
 			bot.bancho.sendMessage(channel, "Graveyards maps allowed = "+AutoHost.instance.settings.allowGraveyard);
+			lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: "+"Graveyards maps allowed = "+AutoHost.instance.settings.allowGraveyard+"```");
 		}
 		
 		if (label.equals("start") && bot.perms.isOperator(userId)) {
@@ -237,9 +264,9 @@ public class CommandsRoom implements CommandExecutor {
 
 		}
 		
-		if (label.equals("playlist")) {
-			
+		if (label.equals("playlist")) {		
 			bot.bancho.sendMessage(channel, bot.beatmaps.getBeatmapsQueue());
+			lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: "+bot.beatmaps.getBeatmapsQueue()+"```");
 		}
 		
 		if (label.equals("last")) {		

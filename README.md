@@ -1,11 +1,11 @@
 # AutoHost for osu!
-A bot for osu! multiplayer to allow automatic beatmap rotation. This software was created to test capabilities of ekgame's [Bancho client framework](https://github.com/ekgame/bancho-client) project.
+A bot for osu! multiplayer to allow automatic beatmap rotation. This software was created to test capabilities of ekgame's [Bancho client framework](https://github.com/ekgame/bancho-client) project *(Please note these links do not work with the current bot, for such look down the readme)*.
 
 *This bot was originally done by ekgame and i've got his permission to modify it. All API's and dependency used are also made by him but contain some slight modifications*
 
 ## When does a game start?
 
-Before starting a game, the bot will wait 3 minutes for everyone to get ready. If everyone is ready before the time runs out - the game will start instantly. If about 70% people are ready when the timer runs out - the game will be force-started.
+Before starting a game, the bot will wait 2 minutes (3 if someone requests for time) for everyone to get ready. If everyone is ready before the time runs out - the game will start instantly. If about 70% people are ready when the timer runs out - the game will be force-started.
 
 Alternatively, players can use !ready to be counted as ready instead of clicking on "ready" button ingame.
 
@@ -41,7 +41,7 @@ To use the bot you can type `!command` into the chat. Some commands only work in
 | !forceskip | An operator command. Instantly skips a map. |
 | !dt | An operator command. Force enables/disables DT |
 | !freemods | An operator command. Force enables/disables freemods. |
-| !wait | An operator command. Resets the waiting timer (default: 3 minutes). |
+| !delay | An operator command. Resets the waiting timer and requested extra time. (default: 2 minutes). |
 | !isop | Only works in private chat. Tells you whether or not you are an operator. |
 | !help | Only works in private chat. Links you to this page. |
 

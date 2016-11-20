@@ -34,6 +34,12 @@ public class CommandsGeneral implements CommandExecutor {
 	public boolean accept(String channel, String sender) {
 		return !channel.startsWith("#");
 	}
+	
+	@Override
+	public void Discord(String channel, String sender, String message){
+		if (channel.equals("#multiplayer"))
+		lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n"+channel+" - "+sender+": "+message+"```");
+	}
 
 	@Override
 	public void handle(String channel, String sender, int userId, String label, List<String> args) {

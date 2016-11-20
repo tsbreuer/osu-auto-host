@@ -1,6 +1,11 @@
 package lt.ekgame.autohost;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,13 +18,13 @@ import lt.ekgame.bancho.api.packets.server.PacketRoomJoined;
 import lt.ekgame.bancho.client.BanchoClient;
 import lt.ekgame.bancho.client.MultiplayerHandler;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
+import lt.ekgame.autohost.plugins.DiscordAPI;
 
 public class AutoHost {
 
 	public static void main(String... args) throws Exception {
 		new AutoHost(args);
 	}
-	
 	public BanchoClient bancho;
 	public Permissions perms;
 	public BeatmapHandler beatmaps = new BeatmapHandler("beatmaps");
@@ -35,12 +40,15 @@ public class AutoHost {
 		}
 		
 		instance = this;
-		
 		settings = new Settings(args[0]);
 		perms = new Permissions(settings.operatorIds);
-		
+			if (settings.DiscordEnabled){
+		lt.ekgame.autohost.plugins.DiscordAPI.pushChannelID = settings.DiscordChannel;
+		lt.ekgame.autohost.plugins.DiscordAPI.token = settings.DiscordToken;
+		lt.ekgame.autohost.plugins.DiscordAPI.pushServerID = settings.DiscordServer;
+		lt.ekgame.autohost.plugins.DiscordAPI.startDiscord();
+			}
 		bancho = new BanchoClient(settings.username, settings.password, false, true);
-		
 		bancho.getCommandHandler().addExecutor(new CommandsGeneral(this));
 		bancho.getCommandHandler().addExecutor(new CommandsRoom(this, settings.osuApi));
 		new ConsoleListener().start();
@@ -56,6 +64,8 @@ public class AutoHost {
 			}
 			if (packet instanceof PacketRoomJoined) {
 				System.out.println("Room created!");
+				lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("Bot Loaded.");
+				
 			}
 		});
 		
@@ -104,6 +114,19 @@ class ConsoleListener extends Thread {
               
               //System.out.println("Calling "+command);
               AutoHost.instance.bancho.getCommandHandler().handle("HyPeX", "HyPeX", 711080, label, args);
+          }
+          if (scommand.trim().startsWith("&")) {
+              String command = scommand.trim().substring(0);
+              String[] rawArgs = command.split(" ");
+              String text = "";
+              if (rawArgs.length == 0)
+              return;
+              
+              List<String> args = new ArrayList<>();
+              for (int i = 0; i < rawArgs.length; i++)
+              text = text+" "+rawArgs[i];
+
+              lt.ekgame.autohost.plugins.DiscordAPI.sendMessage(text);
           }
       }
   }

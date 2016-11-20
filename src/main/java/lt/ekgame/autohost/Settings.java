@@ -16,7 +16,7 @@ import ninja.leaping.configurate.objectmapping.ObjectMappingException;
 public class Settings {
 	
 	// account
-	public String username, password, osuApi;
+	public String username, password, osuApi, DiscordToken,DiscordChannel,DiscordServer;
 	
 	// room
 	public String roomName, roomPassword;
@@ -31,6 +31,7 @@ public class Settings {
 	public double minDifficulty, maxDifficulty;
 	public int maxLength, gamemode;
 	public boolean allowGraveyard;
+	public boolean DiscordEnabled;
 	
 	public Settings(String path) throws IOException, ObjectMappingException {
 		ConfigurationLoader<CommentedConfigurationNode> loader = HoconConfigurationLoader.builder().setPath(Paths.get(path)).build(); // Create the loader
@@ -40,12 +41,16 @@ public class Settings {
 		username = account.getNode("username").getString();
 		password = account.getNode("password").getString();
 		osuApi =   account.getNode("osu-api-key").getString();
+		DiscordToken =   account.getNode("DiscordToken").getString();
+		DiscordChannel =   account.getNode("DiscordChannel").getString();
+		DiscordServer =   account.getNode("DiscordGuild").getString();
 		
 		CommentedConfigurationNode general = node.getNode("general");
 		operatorIds = general.getNode("operators").getList(TypeToken.of(Integer.class));
 		infoText =    general.getNode("info-text").getString();
 		infoText2 =    general.getNode("info-text2").getString();
 		helpText =    general.getNode("help-text").getString();
+		DiscordEnabled = general.getNode("discord-enabled").getBoolean();
 		
 		CommentedConfigurationNode room = node.getNode("room");
 		roomName =     room.getNode("name").getString();

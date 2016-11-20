@@ -73,6 +73,12 @@ public class BeatmapHandler {
 		return false;
 	}
 	
+	public Beatmap getNextBeatmap(){	
+		Beatmap beatmap = null;
+		if (beatmaps.iterator().hasNext())
+			beatmap = beatmaps.iterator().next();
+				return beatmap;
+	}
 	public boolean hasRequested(int userId){
 	for (Beatmap beatmap : beatmaps) {
 		if (beatmap.RequestedBy == userId)

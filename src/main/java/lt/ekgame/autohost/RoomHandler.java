@@ -25,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import lt.ekgame.autohost.plugins.TableRenderer;
 import lt.ekgame.bancho.api.packets.Packet;
 import lt.ekgame.bancho.api.packets.client.PacketSlotLock;
 import lt.ekgame.bancho.api.packets.client.PacketUpdateRoom;
@@ -124,7 +125,8 @@ public class RoomHandler implements PacketHandler {
 		InputStream content = response.getEntity().getContent();
 		String stringContent = IOUtils.toString(content, "UTF-8");
 		JSONArray array = new JSONArray(stringContent);
-		username = array.getJSONObject(0).getString("username");	
+			if (array.length()>0)
+				username = array.getJSONObject(0).getString("username");	
 			} catch (URISyntaxException | JSONException | IOException e) {
 			e.printStackTrace();
 		}
@@ -139,11 +141,13 @@ public class RoomHandler implements PacketHandler {
 	public void registerVoteSkip(int userId, String userName) {
 		if (!skipVotes.contains(userId)) {
 			skipVotes.add(userId);
-			bot.bancho.sendMessage("#multiplayer", userName+" Voted for skipping the song! ("+skipVotes.size()+"/"+ Math.round(slotsTaken/2)+")" );
+			bot.bancho.sendMessage("#multiplayer", userName+" Voted for skipping the song! ("+skipVotes.size()+"/"+ Math.round(slotsTaken * 0.5)+")" );
+			lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: "+userName+" Voted for skipping the song! ("+skipVotes.size()+"/"+ Math.round(slotsTaken * 0.5)+")"+"```");
 		}
-		if ((double)skipVotes.size() >= ((double)Math.round(slotsTaken * 0.5))) {
+		if (skipVotes.size() >= (Math.round(slotsTaken * 0.5))) {
 			MultiplayerHandler mp = bot.bancho.getMultiplayerHandler();
 			bot.bancho.sendMessage("#multiplayer", "The beatmap was voted off.");
+			lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: The beatmap was voted off."+"```");
 			mp.setBeatmap(bot.beatmaps.nextBeatmap());
 			onBeatmapChange();
 		    
@@ -222,7 +226,7 @@ public class RoomHandler implements PacketHandler {
     public void editSlot(int slot)
     {
         bot.bancho.sendPacket(new PacketSlotLock(slot));    
-        //bot.bancho.sendMessage("#multiplayer","Toggled lock on slot ");    
+        bot.bancho.sendMessage("#multiplayer","Toggled lock on slot ");    
     }
 	public void onBeatmapChange() {
 		resetVoteSkip();
@@ -334,12 +338,14 @@ public class RoomHandler implements PacketHandler {
 				bot.bancho.sendMessage("#multiplayer", String.format("Up Next DT %s - %s [%s] - [ %s* ] || "+ result2 +" || Mapped by %s",					
 				beatmap.getArtist(), beatmap.getTitle(), beatmap.getVersion(), beatmap.getDiff(), beatmap.getCreator()));				
 				bot.bancho.sendMessage("#multiplayer","DT: "+ssNOMOD+"pp || DTHD: "+ssHIDDEN+"pp || DTHR: "+ssHR+"pp || DTHDHR: "+ssHDHR+"pp");
+				lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\nUp Next DT "+beatmap.getArtist()+" - "+beatmap.getTitle()+" ["+beatmap.getVersion()+"] - [ "+beatmap.getDiff()+"* ] || "+"[link](http://osu.ppy.sh/b/"+beatmap.getId()+") || Mapped by "+beatmap.getCreator()+"```");			
 				}
 				if (isHTEnabled){
 				String result2 = "[http://osu.ppy.sh/b/"+beatmap.getId()+" Link]";
 				bot.bancho.sendMessage("#multiplayer", String.format("Up Next HT %s - %s [%s] - [ %s* ] || "+ result2 +" || Mapped by %s",					
 				beatmap.getArtist(), beatmap.getTitle(), beatmap.getVersion(), beatmap.getDiff(), beatmap.getCreator()));				
 				bot.bancho.sendMessage("#multiplayer","DT: "+ssNOMOD+"pp || DTHD: "+ssHIDDEN+"pp || DTHR: "+ssHR+"pp || DTHDHR: "+ssHDHR+"pp");
+				lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\nUp Next HT "+beatmap.getArtist()+" - "+beatmap.getTitle()+" ["+beatmap.getVersion()+"] - [ "+beatmap.getDiff()+"* ] || "+"[link](http://osu.ppy.sh/b/"+beatmap.getId()+") || Mapped by "+beatmap.getCreator()+"```");		
 				}
 				
 				if (!isHTEnabled && !isDTEnabled){ 
@@ -347,6 +353,7 @@ public class RoomHandler implements PacketHandler {
 				bot.bancho.sendMessage("#multiplayer", String.format("Up Next %s - %s [%s] - [ %s* ] || "+ result2 +" || Mapped by %s",					
 				beatmap.getArtist(), beatmap.getTitle(), beatmap.getVersion(), beatmap.getDiff(), beatmap.getCreator()));
 				bot.bancho.sendMessage("#multiplayer","NOMOD: "+ssNOMOD+"pp || HD: "+ssHIDDEN+"pp || HR: "+ssHR+"pp || HDHR: "+ssHDHR+"pp");
+				lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\nUp Next "+beatmap.getArtist()+" - "+beatmap.getTitle()+" ["+beatmap.getVersion()+"] - [ "+beatmap.getDiff()+"* ] || "+"[link](http://osu.ppy.sh/b/"+beatmap.getId()+") || Mapped by "+beatmap.getCreator()+"```");		
 				}
 			  
 
@@ -489,9 +496,18 @@ public class RoomHandler implements PacketHandler {
 		if (packet instanceof PacketRoomEveryoneFinished) {
 			resetVoteSkip();
 			resetVotestart();
-			mp.setBeatmap(bot.beatmaps.nextBeatmap());
-			onBeatmapChange();
 			
+			int id = mp.getRoom().getBeatmap().getId();
+			String name = mp.getRoom().getBeatmap().getName();
+			String output = "```Markdown\nBeatmap ";
+				if (mp.getRoom().getBeatmap().getDT())
+					output = output+"DT ";
+				if (mp.getRoom().getBeatmap().getHT())
+					output = output+"HT ";
+				
+			output = output + "["+name+"](http://osu.ppy.sh/b/"+id+" Ended. \n\n";
+			TableRenderer table = new TableRenderer();
+			table.setHeader("Name", "Score", "Mods", "300/100/50/X", "Combo", "Acc", "PP");
 			for (int i=0; i < Prevscores.length; i++)  {
 				//1st Place hmax (Nice Choke) NOMOD 627/46/7/22 (843/1012) 91,67% PP:96,34
 					Prevscores[i][0] = scores[i][0]; // Id
@@ -504,12 +520,25 @@ public class RoomHandler implements PacketHandler {
 					Prevscores[i][7] = scores[i][10]; // MaxCombo
 					Prevscores[i][8] = scores[i][3]; // Acc
 					Prevscores[i][9] = scores[i][4]; // PP
+					int score = (int) scores[i][1];
+					if (score>0)
+							table.addRow(
+							getUsername((int) Math.round(scores[i][0])),
+							score,
+							getMods((int) Prevscores[i][1]),
+							(int) Prevscores[i][2]+"/"+ (int) Prevscores[i][3]+"/"+ (int) Prevscores[i][4]+"/"+ (int)Prevscores[i][5],
+							"("+ (int) Prevscores[i][6]+"/"+ (int) Prevscores[i][7]+")",
+							String.format("%.02f", Prevscores[i][8]*100)+"%",
+							String.format("%.02f", Prevscores[i][9])
+							);
 			}
-			
+			output=output+table.build()+"```";
+			mp.setBeatmap(bot.beatmaps.nextBeatmap());
+			onBeatmapChange();
 			String IDs[] = new String[4];
 			//mp.getRoom().openSlots(2);
 			byte[] status = mp.getRoom().slotStatus;
-
+			lt.ekgame.autohost.plugins.DiscordAPI.sendMessage(output);
 			SkipMe.clear();
 
 			if (scores[0][1] != 0){
@@ -548,7 +577,7 @@ public class RoomHandler implements PacketHandler {
 		for (int i=0; i < 10; i++)  {
 			if ( (int) ((Prevscores[i][0])) == userId) {
 				playedLast = true;
-				returnString = ""+ getUsername( (int) (Prevscores[i][0])) +" "+ getMods((int) Prevscores[i][1]) +" "+ (int) Prevscores[i][2]+"/"+ (int) Prevscores[i][3]+"/"+ (int) Prevscores[i][4]+"/"+ (int) Prevscores[i][5]+" ("+ (int) Prevscores[i][6]+"/"+ (int) Prevscores[i][7]+") "+ String.format("%.02f", Prevscores[i][8]*100)+"% PP:"+ String.format("%.02f", Prevscores[i][9]);
+				returnString = ""+getUsername((int) Math.round(Prevscores[i][0])) +" "+ getMods((int) Prevscores[i][1]) +" "+ (int) Prevscores[i][2]+"/"+ (int) Prevscores[i][3]+"/"+ (int) Prevscores[i][4]+"/"+ (int) Prevscores[i][5]+" ("+ (int) Prevscores[i][6]+"/"+ (int) Prevscores[i][7]+") "+ String.format("%.02f", Prevscores[i][8]*100)+"% PP:"+ String.format("%.02f", Prevscores[i][9]);
 				break;
 			}
 		}
@@ -574,12 +603,14 @@ public class RoomHandler implements PacketHandler {
 			mp.setMods(0);
 			bot.bancho.sendPacket(new PacketUpdateRoom(mp.getRoom()));	
 			bot.bancho.sendMessage("#multiplayer","Double Time Disabled");	
+			lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: Double Time Disabled.");
 			isDTEnabled = false;
 		}else{		
 		MultiplayerHandler mp = bot.bancho.getMultiplayerHandler();
 		mp.setMods(new Mods(Mod.DOUBLE_TIME).getFlags());
 		bot.bancho.sendPacket(new PacketUpdateRoom(mp.getRoom()));	
 		bot.bancho.sendMessage("#multiplayer","Double Time Enabled");	
+		lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: Double Time Enabled.");
 		isDTEnabled = true;
 		
 		}
@@ -617,6 +648,7 @@ public class RoomHandler implements PacketHandler {
 		} catch ( NullPointerException | IllegalStateException e) {
 			e.printStackTrace();
 			bot.bancho.sendMessage("#multiplayer", "Error starting beatmap. Skipping");
+			lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: Error starting beatmap. Skipping"+"```");
 			mp.setBeatmap(bot.beatmaps.nextBeatmap());
 			onBeatmapChange();
 		}
@@ -726,19 +758,20 @@ public class RoomHandler implements PacketHandler {
 					bot.bancho.sendMessage("#multiplayer", String.format("Selected DT %s - %s [%s] - [ %s* ] || "+ result2 +" || Mapped by %s",
 					beatmap.getArtist(), beatmap.getTitle(), beatmap.getVersion(), beatmap.getDiff(), beatmap.getCreator()));		
 					bot.bancho.sendMessage("#multiplayer","DT: "+ssNOMOD+"pp || DTHD: "+ssHIDDEN+"pp || DTHR: "+ssHR+"pp || DTHDHR: "+ssHDHR+"pp");
-					
+					lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\nUp Next DT "+beatmap.getArtist()+" - "+beatmap.getTitle()+" ["+beatmap.getVersion()+"] - [ "+beatmap.getDiff()+"* ] || "+"[link](http://osu.ppy.sh/b/"+beatmap.getId()+") || Mapped by "+beatmap.getCreator()+"```");		
 				}
 				if (beatmap.getHT()){					
 					bot.bancho.sendMessage("#multiplayer", String.format("Selected HT %s - %s [%s] - [ %s* ] || "+ result2 +" || Mapped by %s",
 					beatmap.getArtist(), beatmap.getTitle(), beatmap.getVersion(), beatmap.getDiff(), beatmap.getCreator()));		
 					bot.bancho.sendMessage("#multiplayer","HT: "+ssNOMOD+"pp || HTHD: "+ssHIDDEN+"pp || HTHR: "+ssHR+"pp || HTHDHR: "+ssHDHR+"pp");
-					
+					lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\nUp Next HT "+beatmap.getArtist()+" - "+beatmap.getTitle()+" ["+beatmap.getVersion()+"] - [ "+beatmap.getDiff()+"* ] || "+"[link](http://osu.ppy.sh/b/"+beatmap.getId()+") || Mapped by "+beatmap.getCreator()+"```");	
 				}
 
 				if (!beatmap.getDT() && !beatmap.getHT()){
 					bot.bancho.sendMessage("#multiplayer", String.format("Selected %s - %s [%s] - [ %s* ] || "+ result2 +" || Mapped by %s",
 					beatmap.getArtist(), beatmap.getTitle(), beatmap.getVersion(), beatmap.getDiff(), beatmap.getCreator()));
 					bot.bancho.sendMessage("#multiplayer","NOMOD: "+ssNOMOD+"pp || HD: "+ssHIDDEN+"pp || HR: "+ssHR+"pp || HDHR: "+ssHDHR+"pp");
+					lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\nUp Next "+beatmap.getArtist()+" - "+beatmap.getTitle()+" ["+beatmap.getVersion()+"] - [ "+beatmap.getDiff()+"* ] || "+"[link](http://osu.ppy.sh/b/"+beatmap.getId()+") || Mapped by "+beatmap.getCreator()+"```");		
 				}
 		} else{
 		if (beatmap.getDT()){		
@@ -787,10 +820,12 @@ public class RoomHandler implements PacketHandler {
 		} else {
 			if (slotsTaken == 0) {
 				bot.bancho.sendMessage("#multiplayer", "Lobby is empty, skipping current beatmap.");
+				lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: Lobby is empty, skipping current beatmap."+"```");
 				mp.setBeatmap(bot.beatmaps.nextBeatmap());
 				onBeatmapChange();
 			} else {
 			bot.bancho.sendMessage("#multiplayer", String.format("%d/%d people are ready - extending wait time. If you are ready, please use !ready or click on ready", slotsReady, slotsTaken));
+			lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: "+String.format("%d/%d people are ready - extending wait time. If you are ready, please use !ready or click on ready", slotsReady, slotsTaken)+"```");
 			timer.resetTimer();
 			}
 		}
@@ -817,7 +852,8 @@ public class RoomHandler implements PacketHandler {
 		private boolean stopped = false;
 		private long prevTime = System.currentTimeMillis();
 		private long startTime;
-		private long startAfter = 3*60*1000;
+		private long startAfter = 2*60*1000;
+		private boolean added = false;
 		
 		public TimerThread(RoomHandler handler) {
 			this.handler = handler;
@@ -827,11 +863,23 @@ public class RoomHandler implements PacketHandler {
 			stopped = true;
 		}
 		
+		public boolean extendTimer() {
+			if (added) 
+				return false;
+			
+			added = true;
+			startTime = startTime + 1*60*1000;
+			return true;
+		
+		}
+		
+		
 		public void  skipEvents() {
 			startTime = System.currentTimeMillis() - 5000;
 		}
 		
 		public void resetTimer() {
+			added = false;
 			startTime = System.currentTimeMillis() + startAfter + 200;
 		}
 		
@@ -844,21 +892,40 @@ public class RoomHandler implements PacketHandler {
 			while (!stopped) {
 				//System.out.println("tick");
 				long currTime = System.currentTimeMillis();
-				long min3mark = startTime - 3*60*1000;
+				//long min3mark = startTime - 3*60*1000;
 				long min2mark = startTime - 2*60*1000;
 				long min1mark = startTime - 1*60*1000;
 				long sec10mark = startTime - 10*1000;
-				if (currTime >= min3mark && prevTime<min3mark) {
-					sendMessage("Starting in 3 minutes. If you are ready, please use !ready or click on ready");
-				}
-				if (currTime >= min2mark && prevTime<min2mark) {
-					sendMessage("Starting in 2 minutes. If you are ready, please use !ready or click on ready");
+				//if (currTime >= min3mark && prevTime<min3mark) {
+				//	sendMessage("Starting in 3 minutes. If you are ready, please use !ready or click on ready");
+				//}
+				if (AutoHost.instance.beatmaps.getNextBeatmap() != null)
+						{
+					if (currTime >= min2mark && prevTime<min2mark) {
+						int id = AutoHost.instance.beatmaps.getNextBeatmap().getId();
+					sendMessage("Starting in 2 minutes. If you are ready, please use !ready or click on ready. You can also download the [http://osu.ppy.sh/b/"+id+" next] beatmap.");
+					lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: Starting in 2 minutes."+"```");
+					}
+						}else{
+					if (currTime >= min2mark && prevTime<min2mark) {
+						int id = AutoHost.instance.beatmaps.completed.iterator().next().getId();
+					sendMessage("Starting in 2 minutes. If you are ready, please use !ready or click on ready. You can also download the [http://osu.ppy.sh/b/"+id+" next] beatmap.");
+					lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: Starting in 2 minutes."+"```");
+					}
 				}
 				if (currTime >= min1mark && prevTime<min1mark) {
-					sendMessage("Starting in 1 minute. If you are ready, please use !ready or click on ready");
+					if (added){
+					sendMessage("Starting in 1 minute. If you are ready, please use !ready or click on ready. ");
+					lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: Starting in 1 minutes."+"```");
+					}
+					if (!added){
+					sendMessage("Starting in 1 minute. If you are ready, please use !ready or click on ready. If you need more time, use !wait.");						
+					lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: Starting in 1 minutes."+"```");
+					}
 				}
 				if (currTime >= sec10mark && prevTime<sec10mark) {
 					sendMessage("Starting in 10 seconds.");
+					lt.ekgame.autohost.plugins.DiscordAPI.sendMessage("```Markdown\n#multiplayer - HyPeX: Starting in 10 seconds."+"```");
 				}
 				if (currTime >= startTime && prevTime<=startTime) {
 					handler.tryStart();
@@ -873,5 +940,8 @@ public class RoomHandler implements PacketHandler {
 
 	public void waitTimer() {
 		timer.resetTimer();
+	}
+	public boolean extendTimer() {
+		return timer.extendTimer();
 	}
 }
