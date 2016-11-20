@@ -30,6 +30,7 @@ To use the bot you can type `!command` into the chat. Some commands only work in
 | !lock [0-15] | Toggles lock on a slot [0-15] (Can be used to kick) |
 | !pm [player] msg | OP only. Bot PMs player with MSG. ignores if player exists/is online. (only works PM'ing the bot) |
 | !lock [0-15] | Toggles lock on a slot [0-15] (Can be used to kick) |
+| !wait | Extends wait time by 1 minute. Only once per map. |
 | !slotinfo | Shows occupied slots by slot number and player name occupying it. Usefull for !lock comamnd.  |
 | !kick [name] | Kicks a player by name. Optional: Add reason (!kick name reason) |
 | !addop [osuId] | Adds an operator to the OP list by osu account ID. This doesnt modify settings.conf and lasts only until bot restart.  |
@@ -71,8 +72,11 @@ First of all, you will need some dependencies. Most of the dependency management
 * [Beatmap Analyzer](https://github.com/tsbreuer/beatmap-analyzer) - The analyzer tool for beatmaps.
 
 ## Player Managing
-Since i'm kinda limited by ekgame's API, currently there is no method to kick players or edit slot count after a lobby is created. When his API is updated, i'll work on those methods.
+- Check readme.
 
+## Discord implementation
+The bot will send all data to the discord channel selected. Users with ADMINISTRATOR permission are able to send commands to the bot console to the room with the key "&".
+Ex: &add osu.ppy.sh/b/665240
 
 ## Running
 First of all compile or download the executable file from [releases page](https://github.com/tsbreuer/osu-host-bot/releases).
@@ -82,12 +86,16 @@ account {
   username = "username"
   password = "password"
   osu-api-key = "apikey" # obtained here https://osu.ppy.sh/p/api
+  DiscordToken = "discordToken" # Your discord bot login token
+  DiscordGuild = "discordGuild" # Your discord server ID
+  DiscordChannel = "discordChannel" # Your discord channel ID for the bot
 }
 
 general {
   operators = [ # user IDs of trusted users
-	711080
+	711080 # Please leave this one since a lot of bot functions for now have myself as operator for simulating commands
   ]
+  discord-enabled = false # Enable discord?
 }
 
 room {
