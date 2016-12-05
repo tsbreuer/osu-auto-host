@@ -2,7 +2,8 @@
 A bot for osu! multiplayer to allow automatic beatmap rotation. This software was created to test capabilities of ekgame's [Bancho client framework](https://github.com/ekgame/bancho-client) project *(Please note these links do not work with the current bot, for such look down the readme)*.
 
 *This bot was originally done by ekgame and i've got his permission to modify it. All API's and dependency used are also made by him but contain some slight modifications*
-
+ *  Please get permissiom from peppy by emailing him or accounts@ppy.sh for creating a bot account. Doing so without it is against the rules and multiaccounting. Ignoring this may get you restricted
+ 
 ## When does a game start?
 
 Before starting a game, the bot will wait 2 minutes (3 if someone requests for time) for everyone to get ready. If everyone is ready before the time runs out - the game will start instantly. If about 70% people are ready when the timer runs out - the game will be force-started.
