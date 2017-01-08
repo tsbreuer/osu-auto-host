@@ -14,6 +14,29 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>jcenter</id>
+			<name>jcenter-bintray</name>
+			<url>http://jcenter.bintray.com</url>
+		</repository>
+	</repositories>
+
+	<build>
+		<plugins>
+			<!-- Set a compiler level -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 	<dependencies>
 		<dependency>
 			<groupId>commons-io</groupId>
@@ -42,9 +65,14 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-    	<groupId>com.google.code.gson</groupId>
-    	<artifactId>gson</artifactId>
-    	<version>2.6.2</version>
-</dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.6.2</version>
+		</dependency>
+		<dependency>
+			<groupId>net.dv8tion</groupId>
+			<artifactId>JDA</artifactId>
+			<version>3.0.BETA2_108</version>
+		</dependency>
 	</dependencies>
 </project>

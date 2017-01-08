@@ -18,7 +18,6 @@ import lt.ekgame.bancho.api.packets.server.PacketRoomJoined;
 import lt.ekgame.bancho.client.BanchoClient;
 import lt.ekgame.bancho.client.MultiplayerHandler;
 import ninja.leaping.configurate.objectmapping.ObjectMappingException;
-import lt.ekgame.autohost.plugins.DiscordAPI;
 
 public class AutoHost {
 
