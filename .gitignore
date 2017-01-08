@@ -1,0 +1,6 @@
+/target/
+target
+beatmaps
+/output.txt
+.settings
+/.classpath

@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
@@ -23,11 +22,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import lt.ekgame.autohost.RoomHandler.TimerThread;
 import lt.ekgame.bancho.api.units.Beatmap;
 import lt.ekgame.bancho.client.CommandExecutor;
 import lt.ekgame.bancho.client.MultiplayerHandler;
-import lt.ekgame.beatmap_analyzer.calculator.Performance;
 import lt.ekgame.beatmap_analyzer.parser.BeatmapException;
 import lt.ekgame.beatmap_analyzer.parser.BeatmapParser;
 import lt.ekgame.beatmap_analyzer.utils.Mod;
@@ -248,7 +245,7 @@ public class CommandsRoom implements CommandExecutor {
 		}
 		
 		if (label.equals("cookie")) {
-			String response = "Saddly this game hasnt got a cookie emoji ¯\\_(O.O)_/¯";
+			String response = "Saddly this game hasnt got a cookie emoji ï¿½\\_(O.O)_/ï¿½";
 			bot.bancho.sendMessage(channel, sender+": "+response);
 		}
 		

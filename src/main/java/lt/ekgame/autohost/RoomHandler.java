@@ -12,7 +12,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
@@ -23,7 +22,6 @@ import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import lt.ekgame.autohost.plugins.TableRenderer;
 import lt.ekgame.bancho.api.packets.Packet;
@@ -37,14 +35,11 @@ import lt.ekgame.bancho.api.units.Beatmap;
 import lt.ekgame.bancho.api.units.MultiplayerRoom;
 import lt.ekgame.bancho.client.MultiplayerHandler;
 import lt.ekgame.bancho.client.PacketHandler;
-import lt.ekgame.beatmap_analyzer.calculator.Difficulty;
 import lt.ekgame.beatmap_analyzer.calculator.Performance;
-import lt.ekgame.beatmap_analyzer.calculator.PerformanceCalculator;
 import lt.ekgame.beatmap_analyzer.parser.BeatmapException;
 import lt.ekgame.beatmap_analyzer.parser.BeatmapParser;
 import lt.ekgame.beatmap_analyzer.utils.Mod;
 import lt.ekgame.beatmap_analyzer.utils.Mods;
-import lt.ekgame.beatmap_analyzer.utils.ScoreVersion;
 
 public class RoomHandler implements PacketHandler {
 	

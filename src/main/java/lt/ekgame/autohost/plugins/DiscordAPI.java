@@ -2,8 +2,9 @@ package lt.ekgame.autohost.plugins;
 
 import java.util.List;
 
-import lt.ekgame.autohost.AutoHost;
-import net.dv8tion.jda.core.*;
+import net.dv8tion.jda.core.AccountType;
+import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.TextChannel;
 
