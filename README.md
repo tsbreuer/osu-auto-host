@@ -1,17 +1,17 @@
 # AutoHost for osu!
 A bot for osu! multiplayer to allow automatic beatmap rotation. This software was created to test capabilities of ekgame's [Bancho client framework](https://github.com/ekgame/bancho-client) project *(Please note these links do not work with the current bot, for such look down the readme)*.
 
-*This bot was originally done by ekgame and i've got his permission to modify it. All API's and dependency used are also made by him but contain some slight modifications*
+*This bot was originally done by ekgame and I've got his permission to modify it. All API's and dependencies used are also made by him but contain some slight modifications*
 
 
  
- **  Please get permissiom from peppy by emailing him or accounts@ppy.sh for creating a bot account. Doing so without it is against the rules and multiaccounting. Ignoring this may get you restricted**
+ **  Please get permissiom from peppy by emailing him or accounts@ppy.sh for creating a bot account. Creating a bot account without peppy's permission is considered multiaccounting and will most likely end up with your account being restricted.**
  
 ## When does a game start?
 
 Before starting a game, the bot will wait 2 minutes (3 if someone requests for time) for everyone to get ready. If everyone is ready before the time runs out - the game will start instantly. If about 70% people are ready when the timer runs out - the game will be force-started.
 
-Alternatively, players can use !ready to be counted as ready instead of clicking on "ready" button ingame.
+Alternatively, players can use `!ready` to be counted as ready instead of clicking on "ready" button ingame.
 
 ## Interaction
 
@@ -33,7 +33,6 @@ To use the bot you can type `!command` into the chat. Some commands only work in
 | !afk | Literally means you will be on "Skip" status for each round. Use this command again to be removed from AFK list |
 | !lock [0-15] | Toggles lock on a slot [0-15] (Can be used to kick) |
 | !pm [player] msg | OP only. Bot PMs player with MSG. ignores if player exists/is online. (only works PM'ing the bot) |
-| !lock [0-15] | Toggles lock on a slot [0-15] (Can be used to kick) |
 | !wait | Extends wait time by 1 minute. Only once per map. |
 | !slotinfo | Shows occupied slots by slot number and player name occupying it. Usefull for !lock comamnd.  |
 | !kick [name] | Kicks a player by name. Optional: Add reason (!kick name reason) |
@@ -52,25 +51,25 @@ To use the bot you can type `!command` into the chat. Some commands only work in
 
 ## Adding beatmaps
 
-When you're adding a beatmap, the link should look something like this: `https://osu.ppy.sh/b/665240` of just `osu.ppy.sh/b/665240`. Notice the `/b/` - it denotes that this link point to a specific difficulty in a beatmap set. If the link has `/s/` - it points to a beatmap set and therefore is too ambigious and invalid. If you want to get the valid link, on the beatmap set page, click on one of the **difficulty tabs**.
+When you're adding a beatmap, the link should look something like this: `https://osu.ppy.sh/b/665240` or simply `osu.ppy.sh/b/665240`. Notice the `/b/` - it denotes that this link points to a specific difficulty in a beatmap set. If the link has `/s/` - it points to an entire beatmap set, rendering it invalid. If you want to get the valid link, you'll need to make sure that a difficulty is selected, don't be afraid to click it again to double check. You'll notice in the URL box that the numbers will change along with the letter. 
 
 When adding a DT beatmap, the bot will calculate the new star rating of the song after adding DT to it.
 
 Players can only add a single beatmap at once at the queue (Ignoring current song to be played) to enforce host rotation.
 
 ## Beatmap queue
-To setup a beatmap queue, you will need to create `beatmaps` folder next to the executable file. This folder should contain various `.osu` files of beatmaps to play. If folder is empty, bot will stay without any beatmap loaded until someone loads one.
+To setup a beatmap queue, you will need to create a `beatmaps` folder next to the executable file. This folder should contain various `.osu` files of beatmaps to play. If folder is empty, bot will stay without any beatmap loaded until someone loads one.
 
 ## Beatmap criteria
-This is the current criteria for using the !add command. This will be configurable later, but for now it's hardcoded to:
-* The map must be for osu! standard gamemode.   
-* The map's star difficulty must be between 4 and 6 stars. (Changeable)
-* The map must be either ranked, qualified or pending. (Changeable)
-* The map can not be longer that 6 minutes.
-* The map can not be a repeat of the last 30 songs.
+This is the current criteria for using the !add command. Some settings will be configurable, but for now, the map needs to:
+* Be for osu! standard gamemode.   
+* Have a star difficulty between 4 and 6. (Changeable)
+* Be ranked, qualified or pending. (Changeable)
+* Be less then 6 minutes long.
+* Not be a repeat of the last 30 songs played.
 
 ## Compiling
-First of all, you will need some dependencies. Most of the dependency management is done with Maven. There are three libraries that you will need to reference manually. **Note they're originally done by ekgame, but since i've done some personal modifications, i've uploaded them under my repositories. Make sure to show him some love. Their URLs are literally the same as ekgame, just replace my username with his and you will get the pointer to his work.**
+First of all, you will need some dependencies. Most of the dependency management is done with Maven. There are three libraries that you will need to reference manually. **Note they're originally done by ekgame, but since I've done some personal modifications, I've uploaded them under my repositories. Make sure to show him some love. Their URLs are literally the same as ekgame, just replace my username with his and you will get the pointer to his work.**
 * [Bancho API](https://github.com/tsbreuer/bancho-api) - the commons API used for packet parsing.
 * [Bancho Client](https://github.com/tsbreuer/bancho-client) - the framework for Bancho client.
 * [Beatmap Analyzer](https://github.com/tsbreuer/beatmap-analyzer) - The analyzer tool for beatmaps.
@@ -119,6 +118,6 @@ Before running the bot, don't forget to setup a `beatmaps` folder. Your file str
 |--autohost.jar
 ```
 
-Then to actually run the bot the bot use the file as an argument:
+Then to actually run the bot use, the file as an argument:
 
 ```java -jar autohost.jar settings.conf```
