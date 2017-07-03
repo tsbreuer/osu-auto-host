@@ -118,6 +118,6 @@ Before running the bot, don't forget to setup a `beatmaps` folder. Your file str
 |--autohost.jar
 ```
 
-Then to actually run the bot use, the file as an argument:
+Then to actually run the bot, all you have to do is execute the `run.cmd` or `run.sh`. Just make sure the text is as following:
 
 ```java -jar autohost.jar settings.conf```
