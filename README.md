@@ -22,32 +22,32 @@ To use the bot you can type `!command` into the chat. Some commands only work in
 | Command       | Description |
 |---|---|
 | !add [link to beatmap]  | Adds a beatmap to a queue of maps to play. The beatmaps must match a criteria decribed below. |
-| !adddt [link to beatmap] | Adds a beatmap to a queue of maps to play WITH DT. The beatmaps must match a criteria decribed below. DT Rating is calculated, so dont worry. |
-| !searchsong [Name] | Searches a beatmap by name in the current star rating. If a song has more than one option in current rating, it will pick the highest automatically. If there are three or less matches, it will output the options with links to use !add |
-| !voteskip | Vote to skip a map. Over 50% of users have to vote to skip the current song. |
+| !adddt [link to beatmap] | Adds a beatmap to a queue of maps to play WITH DT. The beatmaps must match a criteria decribed below. DT rating is calculated, so dont worry. |
+| !addop [osuId] | Adds an operator to the OP list by osu account ID. This doesn't modify settings.conf and lasts until the bot restarts.  |
+| !afk | Sets yourself to away. Use this command again to be removed from AFK list |
+| !author | Displays beatmap's author info. |
+| !delay | An operator command. Resets the waiting timer and requested extra time. |
+| !dt | An operator command. Force enables/disables DT |
+| !forceskip | An operator command. Instantly skips a map. |
+| !freemods | An operator command. Force enables/disables freemods. |
+| !graveyard | An operator command. Enables/Disables graveyard maps |
+| !help | Only works in private chat. Links you to this page. |
 | !info | Displays text specified in info-text at settings.conf |
-| !author | Displays author info. Non-editable. |
-| !queue | Displays upcoming beatmaps in queue. Be aware long queue lists may be buggy and the chat not enough. |
-| !ready (or !r) | Vote start a map/counts you as ready. Lobby will automatically start if 75% of players are ready of have voted as. |
-| !skip | Bot will ignore your status for current round and start regardless if conditions are met (Ignoring you) |
-| !afk | Literally means you will be on "Skip" status for each round. Use this command again to be removed from AFK list |
-| !lock [0-15] | Toggles lock on a slot [0-15] (Can be used to kick) |
-| !pm [player] msg | OP only. Bot PMs player with MSG. ignores if player exists/is online. (only works PM'ing the bot) |
-| !wait | Extends wait time by 1 minute. Only once per map. |
-| !slotinfo | Shows occupied slots by slot number and player name occupying it. Usefull for !lock comamnd.  |
+| !isop | Only works in private chat. Tells you whether or not you are an operator. |
 | !kick [name] | Kicks a player by name. Optional: Add reason (!kick name reason) |
-| !addop [osuId] | Adds an operator to the OP list by osu account ID. This doesnt modify settings.conf and lasts only until bot restart.  |
-| !removeop [osuId] | Removes an operator from the OP list by osu account ID. This doesnt modify settings.conf and lasts only until bot restart.  |
-| !rename [name] | An operator command. Renames lobby to specified |.
+| !lock [0-15] | Toggles lock on a slot [0-15] (Can be used to kick) |
 | !maxdiff [rating] | An operator command. Changes maximum star difficulty. |
 | !mindiff [rating] | An operator command. Changes minimum star difficulty. |
-| !graveyard | An operator command. Enables/Disables graveyard maps |
-| !forceskip | An operator command. Instantly skips a map. |
-| !dt | An operator command. Force enables/disables DT |
-| !freemods | An operator command. Force enables/disables freemods. |
-| !delay | An operator command. Resets the waiting timer and requested extra time. (default: 2 minutes). |
-| !isop | Only works in private chat. Tells you whether or not you are an operator. |
-| !help | Only works in private chat. Links you to this page. |
+| !pm [player] msg | An operator command. Bot PMs specified player with a message. (Only works PM'ing the bot) |
+| !queue | Displays upcoming beatmaps in queue. Long queue lists will probably bug out. |
+| !ready (or !r) | Indicate that you're ready. Lobby will automatically start if 75% of the players are ready. |
+| !removeop [osuId] | Removes an operator from the OP list by osu account ID. This doesnt modify settings.conf and lasts only until bot restart.  |
+| !rename [name] | An operator command. Renames lobby. |.
+| !searchsong [name] | Searches for a beatmap in the current star rating. If a song has more than one difficulty in the star limit, thte bot will pick the most difficult one. If there are three or less matches, it will output the options with links to use !add. |
+| !skip | Bot will ignore your status for current round and start regardless if conditions are met. (Ignoring you) |
+| !slotinfo | Shows occupied slots by slot number and player name occupying it. |
+| !voteskip | Vote to skip a map. Over 50% of users have to vote to skip the current map. |
+| !wait | Extends wait time by 1 minute. Only once per map. |
 
 ## Adding beatmaps
 
