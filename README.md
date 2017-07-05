@@ -1,7 +1,7 @@
 # AutoHost for osu!
-A bot for osu! multiplayer to allow automatic beatmap rotation. This software was created to test capabilities of ekgame's [Bancho client framework](https://github.com/ekgame/bancho-client) project *(Please note these links do not work with the current bot, for such look down the readme)*.
+A bot for osu! multiplayer to allow automatic beatmap rotation. This software was created to test capabilities of ekgame's [Bancho client framework](https://github.com/ekgame/bancho-client) project *(please note these links do not work with the current bot, for such look down the readme)*.
 
-*This bot was originally done by ekgame and I've got his permission to modify it. All API's and dependencies used are also made by him but contain some slight modifications*
+*This bot was originally done by ekgame and I've got his permission to modify it. All API's and dependencies used are made by him but contain some slight modifications*
 
 
  
@@ -11,7 +11,7 @@ A bot for osu! multiplayer to allow automatic beatmap rotation. This software wa
 
 Before starting a game, the bot will wait 2 minutes (3 if someone requests for time) for everyone to get ready. If everyone is ready before the time runs out - the game will start instantly. If about 70% people are ready when the timer runs out - the game will be force-started.
 
-Alternatively, players can use `!ready` to be counted as ready instead of clicking on "ready" button ingame.
+Alternatively, players can use `!ready` to be counted as ready instead of clicking on the "ready" button ingame.
 
 ## Interaction
 
@@ -34,17 +34,17 @@ To use the bot you can type `!command` into the chat. Some commands only work in
 | !help | Only works in private chat. Links you to this page. |
 | !info | Displays text specified in info-text at settings.conf |
 | !isop | Only works in private chat. Tells you whether or not you are an operator. |
-| !kick [name] | Kicks a player by name. Optional: Add reason (!kick name reason) |
-| !lock [0-15] | Toggles lock on a slot [0-15] (Can be used to kick) |
+| !kick [name] [reason] | Kicks a player by name. |
+| !lock [0-15] | Used to lock a slot. [0-15] |
 | !maxdiff [rating] | An operator command. Changes maximum star difficulty. |
 | !mindiff [rating] | An operator command. Changes minimum star difficulty. |
-| !pm [player] msg | An operator command. Bot PMs specified player with a message. (Only works PM'ing the bot) |
+| !pm [player] msg | An operator command. Bot PMs specified player with a message. |
 | !queue | Displays upcoming beatmaps in queue. Long queue lists will probably bug out. |
 | !ready (or !r) | Indicate that you're ready. Lobby will automatically start if 75% of the players are ready. |
 | !removeop [osuId] | Removes an operator from the OP list by osu account ID. This doesnt modify settings.conf and lasts only until bot restart.  |
-| !rename [name] | An operator command. Renames lobby. |.
+| !rename [name] | An operator command. Renames lobby. |
 | !searchsong [name] | Searches for a beatmap in the current star rating. If a song has more than one difficulty in the star limit, thte bot will pick the most difficult one. If there are three or less matches, it will output the options with links to use !add. |
-| !skip | Bot will ignore your status for current round and start regardless if conditions are met. (Ignoring you) |
+| !skip | Bot will ignore your status for current round and start regardless if conditions are met. |
 | !slotinfo | Shows occupied slots by slot number and player name occupying it. |
 | !voteskip | Vote to skip a map. Over 50% of users have to vote to skip the current map. |
 | !wait | Extends wait time by 1 minute. Only once per map. |
