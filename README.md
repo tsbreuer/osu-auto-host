@@ -1,7 +1,7 @@
 # AutoHost for osu!
 A bot for osu! multiplayer to allow automatic beatmap rotation. This software was created to test capabilities of ekgame's [Bancho client framework](https://github.com/ekgame/bancho-client) project *(please note these links do not work with the current bot, for such look down the readme)*.
 
-*This bot was originally done by ekgame and I've got his permission to modify it. All API's and dependencies used are made by him but contain some slight modifications*
+*This bot was originally done by ekgame and I've recieved his permission to modify it. All API's and dependencies used are made by him but contain some slight modifications*
 
 
  
@@ -15,7 +15,7 @@ Alternatively, players can use `!ready` to be counted as ready instead of clicki
 
 ## Interaction
 
-To use the bot you can type `!command` into the chat. Some commands only work in the multiplayer chat, some only in private chat. There are only two permission levels at the moment: user (default) and an operator. Operator is an administrative role and therefore it can use some more commands.
+To begin your interactions with AutoHost, I suggest adding it as a friend for PM-exclusive commands. Friending him is not mandatory, but friending it will grant you the permissions to create your own lobby, delete your lobby, and more. There are only two permission levels at the moment: user (default) and an operator. Operator is an administrative role assigned to the creator of the lobby and whoever he deems worthy.
 
 ## Commands
 
@@ -23,31 +23,36 @@ To use the bot you can type `!command` into the chat. Some commands only work in
 |---|---|
 | !add [link to beatmap]  | Adds a beatmap to a queue of maps to play. The beatmaps must match a criteria decribed below. |
 | !adddt [link to beatmap] | Adds a beatmap to a queue of maps to play WITH DT. The beatmaps must match a criteria decribed below. DT rating is calculated, so dont worry. |
-| !addop [osuId] | Adds an operator to the OP list by osu account ID. This doesn't modify settings.conf and lasts until the bot restarts.  |
 | !afk | Sets yourself to away. Use this command again to be removed from AFK list |
 | !author | Displays beatmap's author info. |
-| !delay | An operator command. Resets the waiting timer and requested extra time. |
-| !dt | An operator command. Force enables/disables DT |
-| !forceskip | An operator command. Instantly skips a map. |
-| !freemods | An operator command. Force enables/disables freemods. |
-| !graveyard | An operator command. Enables/Disables graveyard maps |
 | !help | Only works in private chat. Links you to this page. |
 | !info | Displays text specified in info-text at settings.conf |
-| !isop | Only works in private chat. Tells you whether or not you are an operator. |
-| !kick [name] [reason] | Kicks a player by name. |
-| !lock [0-15] | Used to lock a slot. [0-15] |
-| !maxdiff [rating] | An operator command. Changes maximum star difficulty. |
-| !mindiff [rating] | An operator command. Changes minimum star difficulty. |
-| !pm [player] msg | An operator command. Bot PMs specified player with a message. |
+| !isop | Only works in private chat. Tells you whether or not you're an operator. |
 | !queue | Displays upcoming beatmaps in queue. Long queue lists will probably bug out. |
 | !ready (or !r) | Indicate that you're ready. Lobby will automatically start if 75% of the players are ready. |
-| !removeop [osuId] | Removes an operator from the OP list by osu account ID. This doesnt modify settings.conf and lasts only until bot restart.  |
-| !rename [name] | An operator command. Renames lobby. |
 | !searchsong [name] | Searches for a beatmap in the current star rating. If a song has more than one difficulty in the star limit, thte bot will pick the most difficult one. If there are three or less matches, it will output the options with links to use !add. |
 | !skip | Bot will ignore your status for current round and start regardless if conditions are met. |
 | !slotinfo | Shows occupied slots by slot number and player name occupying it. |
 | !voteskip | Vote to skip a map. Over 50% of users have to vote to skip the current map. |
 | !wait | Extends wait time by 1 minute. Only once per map. |
+
+## Operator Commands
+
+| Command       | Description |
+|---|---|
+| !kick [name] [reason] | Kicks a player by name. |
+| !addop [osuId] | Adds an operator to the OP list by osu account ID. This doesn't modify settings.conf and lasts until the bot restarts.  |
+| !delay | Resets the waiting timer and requested extra time. |
+| !dt | Force enables/disables DT |
+| !forceskip | Instantly skips a map. |
+| !freemods | Force enables/disables freemods. |
+| !graveyard | Enables/Disables graveyard maps |
+| !lock [0-15] | Used to lock a slot. [0-15] |
+| !maxdiff [rating] | Changes maximum star difficulty. |
+| !mindiff [rating] | Changes minimum star difficulty. |
+| !pm [player] msg | Bot PMs specified player with a message. |
+| !removeop [osuId] | Removes an operator from the OP list by osu account ID. This doesnt modify settings.conf and lasts only until bot restart.  |
+| !rename [name] | An operator command. Renames lobby. |
 
 ## Adding beatmaps
 
@@ -57,13 +62,10 @@ When adding a DT beatmap, the bot will calculate the new star rating of the song
 
 Players can only add a single beatmap at once at the queue (Ignoring current song to be played) to enforce host rotation.
 
-## Beatmap queue
-To setup a beatmap queue, you will need to create a `beatmaps` folder next to the executable file. This folder should contain various `.osu` files of beatmaps to play. If folder is empty, bot will stay without any beatmap loaded until someone loads one.
-
 ## Beatmap criteria
 This is the current criteria for using the !add command. Some settings will be configurable, but for now, the map needs to:
 * Be for osu! standard gamemode.   
-* Have a star difficulty between 4 and 6. (Changeable)
+* Have a star difficulty between X and Y. (Changes depending on the lobby)
 * Be ranked, qualified or pending. (Changeable)
 * Be less then 6 minutes long.
 * Not be a repeat of the last 30 songs played.
@@ -73,9 +75,6 @@ First of all, you will need some dependencies. Most of the dependency management
 * [Bancho API](https://github.com/tsbreuer/bancho-api) - the commons API used for packet parsing.
 * [Bancho Client](https://github.com/tsbreuer/bancho-client) - the framework for Bancho client.
 * [Beatmap Analyzer](https://github.com/tsbreuer/beatmap-analyzer) - The analyzer tool for beatmaps.
-
-## Player Managing
-- Check readme.
 
 ## Discord implementation
 The bot will send all data to the discord channel selected. Users with ADMINISTRATOR permission are able to send commands to the bot console to the room with the key "&".
