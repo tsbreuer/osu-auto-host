@@ -40,7 +40,7 @@ To begin your interactions with AutoHost, I suggest adding it as a friend for PM
 
 | Command       | Description |
 |---|---|
-| !kick [name] [reason] | Kicks a player by name. |
+| !kick [player] [reason] | Kicks a player. |
 | !addop [osuId] | Adds an operator to the OP list by osu account ID. This doesn't modify settings.conf and lasts until the bot restarts.  |
 | !delay | Resets the waiting timer and requested extra time. |
 | !dt | Force enables/disables DT |
