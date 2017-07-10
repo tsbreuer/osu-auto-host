@@ -5,11 +5,11 @@ A bot for osu! multiplayer to allow automatic beatmap rotation. This software wa
 
 
  
-**Please get permissiom from peppy by emailing him or accounts@ppy.sh for creating a bot account. Creating a bot account without peppy's permission is considered multiaccounting and will most likely end up with your account being restricted.
+**Please get permissiom from peppy by emailing him or accounts@ppy.sh for creating a bot account. Creating a bot account without peppy's permission is considered multiaccounting and will most likely end up with your account being restricted.**
  
 ## When does a game start?
 
-Before starting a game, the bot will wait 2 minutes (3 if someone requests for time) for everyone to get ready. If everyone is ready before the time runs out - the game will start instantly. If about 70% people are ready when the timer runs out - the game will be force-started.
+Before starting a game, the bot will wait 2 minutes (3 if someone requests for time) for everyone to get ready. If everyone is ready before the time runs out - the game will start instantly. If around 70% of the players are ready when the timer runs out - the game will start.
 
 Alternatively, players can use `!ready` to be counted as ready instead of clicking on the "ready" button ingame.
 
@@ -23,7 +23,7 @@ To begin your interactions with AutoHost, I suggest adding it as a friend for PM
 |---|---|
 | !add [link to beatmap]  | Adds a beatmap to a queue of maps to play. The beatmaps must match a criteria decribed below. |
 | !adddt [link to beatmap] | Adds a beatmap to a queue of maps to play WITH DT. The beatmaps must match a criteria decribed below. DT rating is calculated, so dont worry. |
-| !afk | Sets yourself to away. Use this command again to be removed from AFK list |
+| !afk | Sets your status to away. Toggleable. |
 | !author | Displays beatmap's author info. |
 | !help | Only works in private chat. Links you to this page. |
 | !info | Displays text specified in info-text at settings.conf |
