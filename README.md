@@ -5,7 +5,7 @@ A bot for osu! multiplayer to allow automatic beatmap rotation. This software wa
 
 
  
- **  Please get permissiom from peppy by emailing him or accounts@ppy.sh for creating a bot account. Creating a bot account without peppy's permission is considered multiaccounting and will most likely end up with your account being restricted.**
+ **Please get permissiom from peppy by emailing him or accounts@ppy.sh for creating a bot account. Creating a bot account without peppy's permission is considered multiaccounting and will most likely end up with your account being restricted.**
  
 ## When does a game start?
 
