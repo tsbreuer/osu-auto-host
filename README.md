@@ -1,8 +1,4 @@
 # AutoHost for osu!
-A bot for osu! multiplayer to allow automatic beatmap rotation. This software was created to test capabilities of ekgame's [Bancho client framework](https://github.com/ekgame/bancho-client) project *(please note these links do not work with the current bot, for such look down the readme)*.
-
-*This bot was originally done by ekgame and I've recieved his permission to modify it. All API's and dependencies used are made by him but contain some slight modifications*
-
 
  
 **Please get permissiom from peppy by emailing him or accounts@ppy.sh for creating a bot account. Creating a bot account without peppy's permission is considered multiaccounting and will most likely end up with your account being restricted.**
